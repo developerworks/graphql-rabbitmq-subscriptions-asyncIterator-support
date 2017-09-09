@@ -38,12 +38,7 @@ var AmqpPubSub = (function () {
         else {
             return new Promise(function (resolve, reject) {
                 _this.logger.trace("trying to subscribe to queue '%s'", triggerName);
-                var queueConfig = {
-                    name: triggerName,
-                    dlq: 'graphql-subscription-queue',
-                    dlx: 'graphql-subscription-exchange'
-                };
-                _this.consumer.subscribe(queueConfig, function (msg) { return _this.onMessage(triggerName, msg); })
+                _this.consumer.subscribe(triggerName, function (msg) { return _this.onMessage(triggerName, msg); })
                     .then(function (disposer) {
                     _this.subsRefsMap[triggerName] = (_this.subsRefsMap[triggerName] || []).concat([id]);
                     _this.unsubscribeChannel = disposer;
